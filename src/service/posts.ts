@@ -28,8 +28,8 @@ export async function getNonFeaturedPosts(): Promise<Post[]> {
     .then((posts) => posts.filter((post) => !post.featured));
 }
 
-// fetch 의 경우 빌드될 때 자동으로 중복제거 해줘서 한번만 불러오도록 하는데 데이터베이스에 접근하거나  파일을 읽는 함수는 중복 제거가 되지 않음
-// cache : 호출한 인자가 동일한 인자를 받으면 한번 호출되었다면 캐싱된 데이터가 반환
+// fetch 의 경우 빌드될 때 자동으로 중복제거 해줘서 한번만 불러오도록 하는데 데이터베이스에 접근하거나 파일을 읽는 함수는 중복 제거가 되지 않음
+// cache : 호출한 인자가 동일한 인자라면 즉, 이전에 한번 호출되었다면 캐싱된 데이터가 반환, 그래서 위 문제가 해결됨 / 서버가 동작하는 모든 시간에 걸쳐서 캐시를 사용하는 것이 아니라 한번 렌더링되는 사이클에 한에서만 캐시 즉, 페이지가 렌더링되었을 때 그 안의 컴포넌트들이 동일한 함수의 동일한 인자를 썼을 때 발동
 export const getAllPosts = cache(async () => {
   const filePath = path.join(process.cwd(), "data", "posts.json");
   return readFile(filePath, "utf-8")
